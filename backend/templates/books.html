@@ -1,0 +1,41 @@
+<!-- templates/books.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book List</title>
+</head>
+<body>
+<h1>Book List</h1>
+<ul>
+    {{range .Books}}
+    <li>
+        {{.Title}} by {{.Author}}
+        <button onclick="deleteBook('{{.Title}}')">Delete</button>
+        <button onclick="editProgress('{{.Title}}')">Edit Progress</button>
+    </li>
+    {{end}}
+</ul>
+
+<button onclick="addBook()">Add Book</button>
+
+<script>
+    function addBook() {
+        // Implement the logic for adding a new book
+        alert("Add Book clicked");
+    }
+
+    function deleteBook(title) {
+        // Implement the logic for deleting the book with the specified title
+        alert("Delete Book clicked for: " + title);
+    }
+
+    function editProgress(title) {
+        // Implement the logic for editing the progress of the book with the specified title
+        alert("Edit Progress clicked for: " + title);
+    }
+</script>
+</body>
+</html>

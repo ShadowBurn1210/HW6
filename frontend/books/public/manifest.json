@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "Book Progress Tracker",
+  "name": "Simple app to track your reading progress and characters in the book",
   "icons": [
     {
       "src": "favicon.ico",
