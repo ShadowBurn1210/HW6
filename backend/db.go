@@ -13,7 +13,7 @@ import (
 // I mainly used go documentation in this file to help me with this assignment
 const (
 	host     = "host"
-	port     = port
+	port     = 0000
 	user     = "user"
 	password = "password"
 	dbname   = "dbname"
