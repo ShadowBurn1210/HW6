@@ -12,11 +12,11 @@ import (
 
 // I mainly used go documentation in this file to help me with this assignment
 const (
-	host     = "host"
-	port     = 0000
-	user     = "user"
-	password = "password"
-	dbname   = "dbname"
+	host     = "localhost"
+	port     = 5432
+	user     = "postgres"
+	password = "Kasjauns2003"
+	dbname   = "HW6"
 )
 
 func ConnectToDatabase() *sql.DB {
@@ -98,9 +98,9 @@ func retrieveBooks(db *sql.DB) ([]book, error) {
 	return books, nil
 }
 
-func deleteBook(db *sql.DB, id int) error {
-	sqlStatement := `DELETE FROM Books WHERE id = $1`
-	_, err := db.Exec(sqlStatement, id)
+func deleteBook(db *sql.DB, title string) error {
+	sqlStatement := `DELETE FROM Books WHERE title = $1`
+	_, err := db.Exec(sqlStatement, title)
 	if err != nil {
 		return err
 	}
@@ -109,12 +109,12 @@ func deleteBook(db *sql.DB, id int) error {
 	return nil
 }
 
-func updateBook(db *sql.DB, id int, newBook book) error {
+func updateBook(db *sql.DB, Booktitle string, pagesReads int, prograss string) error {
 	sqlStatement := `
 		UPDATE Books
-		SET title = $2, author = $3, pages = $4, pagesRead = $5, progress = $6
-		WHERE id = $1;`
-	_, err := db.Exec(sqlStatement, id, newBook.Title, newBook.Author, newBook.Pages, newBook.PagesRead, newBook.Progress)
+		SET pagesRead = $2, progress = $3
+		WHERE title = $1;`
+	_, err := db.Exec(sqlStatement, Booktitle, pagesReads, prograss)
 	if err != nil {
 		log.Println("Error executing SQL statement:", err)
 		return err

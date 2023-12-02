@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h1> Which book you want to Edit? </h1>
+<form method="POST" action="/update" name="update">
+    <input type="text" name="title" placeholder="Books Title"><br>
+    <input type="text" name="pagesRead" placeholder="pagesRead"><br>
+    <label>Progress:</label>
+    <select name="progress">
+        <option value="Not started">Not Started</option>
+        <option value="Started Reading">In Progress</option>
+        <option value="Completed Reading">Completed</option>
+        <option value="Droped">Droped</option>
+    </select><br>
+    <input type="submit" value="submit">
+</form>
+<button onclick="getBacktoMain()">Return</button>
+
+</body>
+<script>
+    function getBacktoMain() {
+        window.location.href = "/";
+    }
+
+</script>
+</html>

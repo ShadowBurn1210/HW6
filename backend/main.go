@@ -53,6 +53,32 @@ func addBooksFromHTML(db *sql.DB) gin.HandlerFunc {
 	}
 }
 
+func deleteBooksFromHTML(db *sql.DB) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		bookTitle := c.PostForm("title")
+
+		err := deleteBook(db, bookTitle)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			return
+		}
+	}
+}
+
+func chooseBooksFromHTML(db *sql.DB) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		a := c.PostForm("pagesRead")
+		pagesRead, _ := strconv.Atoi(a)
+		progress := c.PostForm("progress")
+		title := c.PostForm("title")
+		err := updateBook(db, title, pagesRead, progress)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			return
+		}
+	}
+}
+
 func main() {
 	db := ConnectToDatabase()
 
@@ -70,81 +96,22 @@ func main() {
 	})
 	router.POST("/addbook", addBooksFromHTML(db))
 
+	router.GET("/delete", func(c *gin.Context) {
+		c.HTML(http.StatusOK, "deleteBook.html", gin.H{
+			"title": "You can delete a book here!",
+		})
+	})
+	router.POST("/delete", deleteBooksFromHTML(db))
+
+	router.GET("/update", func(c *gin.Context) {
+		c.HTML(http.StatusOK, "updateBook.html", gin.H{
+			"title": "You can update a book here!",
+		})
+	})
+
+	router.POST("/update", chooseBooksFromHTML(db))
+
 	router.Run("localhost:8080")
 	db.Close()
 
 }
-
-//func main() {
-//	db := ConnectToDatabase()
-//	CreateBookTable(db)
-//
-//	scanner := bufio.NewScanner(os.Stdin)
-//	fmt.Println("Enter some lines (Ctrl+D to end):")
-//
-//	for scanner.Scan() {
-//		line := scanner.Text()
-//		fmt.Println("Read:", line)
-//
-//		if line == "add" {
-//			wheelOfTimeBook := book{
-//				Title:     "The Eye of the World",
-//				Author:    "Robert Jordan",
-//				Pages:     814,
-//				PagesRead: 200,
-//				Progress:  "In Progress",
-//			}
-//			err := addBooks(wheelOfTimeBook, db)
-//			if err != nil {
-//				fmt.Println(err)
-//				return
-//			}
-//		} else if line == "show" {
-//			books, err := retrieveBooks(db)
-//			if err != nil {
-//				return
-//			}
-//			for _, book := range books {
-//				fmt.Println(book)
-//			}
-//		} else if line == "delete" {
-//			fmt.Print("Enter the ID of the book to delete: ")
-//			var bookID int
-//			_, err := fmt.Scan(&bookID)
-//			if err != nil {
-//				log.Println("Error reading book ID:", err)
-//				continue
-//			}
-//
-//			err = deleteBook(db, bookID)
-//			if err != nil {
-//				log.Println("Error deleting book:", err)
-//			}
-//		} else if line == "update" {
-//			fmt.Print("Enter the ID of the book to update: ")
-//			var bookID int
-//			_, err := fmt.Scan(&bookID)
-//			if err != nil {
-//				log.Println("Error reading book ID:", err)
-//				continue
-//			}
-//
-//			wheelOfTimeBook := book{
-//				Title:     "The Eye of the World",
-//				Author:    "Robert Jordan",
-//				Pages:     900,
-//				PagesRead: 210,
-//				Progress:  "In Progress",
-//			}
-//
-//			err = updateBook(db, bookID, wheelOfTimeBook)
-//			if err != nil {
-//				log.Println("Error updating book:", err)
-//			}
-//
-//		} else if line == "exit" {
-//			break
-//		}
-//		db.Close()
-//	}
-//}
