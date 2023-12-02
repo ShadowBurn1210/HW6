@@ -11,13 +11,12 @@ import (
 // https://chat.openai.com/share/391f4459-a727-43eb-9a55-590bca0e8396 - link to my OpenAI chat for db
 
 // I mainly used go documentation in this file to help me with this assignment
-
 const (
-	host     = "localhost"
-	port     = 5432
-	user     = "postgres"
-	password = "Kasjauns2003"
-	dbname   = "HW6"
+	host     = "host"
+	port     = 0000
+	user     = "user"
+	password = "password"
+	dbname   = "dbname"
 )
 
 func ConnectToDatabase() *sql.DB {
@@ -118,7 +117,6 @@ func updateBook(db *sql.DB, id int, newBook book) error {
 	_, err := db.Exec(sqlStatement, id, newBook.Title, newBook.Author, newBook.Pages, newBook.PagesRead, newBook.Progress)
 	if err != nil {
 		log.Println("Error executing SQL statement:", err)
-
 		return err
 	}
 
