@@ -12,11 +12,11 @@ import (
 
 // I mainly used go documentation in this file to help me with this assignment
 const (
-	host     = "localhost"
-	port     = 5432
-	user     = "postgres"
-	password = "Kasjauns2003"
-	dbname   = "HW6"
+	host     = "host"
+	port     = 0000
+	user     = "user"
+	password = "password"
+	dbname   = "dbname"
 )
 
 func ConnectToDatabase() *sql.DB {
