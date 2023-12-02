@@ -46,7 +46,8 @@ func CreateBookTable(db *sql.DB) {
 			author     VARCHAR(255) NOT NULL,
 		    pages      INT NOT NULL,
 		    pagesRead  INT NOT NULL,
-			progress      VARCHAR(128) NOT NULL
+			progress      VARCHAR(128) NOT NULL,
+		    picture    VARCHAR(255) NOT NULL
 		);
 	`)
 	if err != nil {
@@ -56,12 +57,12 @@ func CreateBookTable(db *sql.DB) {
 
 func addBooks(newBook book, db *sql.DB) error {
 	sqlStatement := `
-		INSERT INTO Books (title, author, pages, pagesRead, progress)
-		VALUES ($1, $2, $3, $4, $5)
+		INSERT INTO Books (title, author, pages, pagesRead, progress, picture)
+		VALUES ($1, $2, $3, $4, $5, $6)
 		RETURNING id`
 
 	var bookID string
-	err := db.QueryRow(sqlStatement, newBook.Title, newBook.Author, newBook.Pages, newBook.PagesRead, newBook.Progress).Scan(&bookID)
+	err := db.QueryRow(sqlStatement, newBook.Title, newBook.Author, newBook.Pages, newBook.PagesRead, newBook.Progress, newBook.Picture).Scan(&bookID)
 	if err != nil {
 		return err
 	}
@@ -86,13 +87,13 @@ func retrieveBooks(db *sql.DB) ([]book, error) {
 		var pages int
 		var pagesRead int
 		var progress string
-
-		err = rows.Scan(&id, &title, &author, &pages, &pagesRead, &progress)
+		var picture string
+		err = rows.Scan(&id, &title, &author, &pages, &pagesRead, &progress, &picture)
 		if err != nil {
 			return nil, err
 		}
 
-		books = append(books, book{Title: title, Author: author, Pages: pages, PagesRead: pagesRead, Progress: progress})
+		books = append(books, book{Title: title, Author: author, Pages: pages, PagesRead: pagesRead, Progress: progress, Picture: picture})
 	}
 
 	return books, nil

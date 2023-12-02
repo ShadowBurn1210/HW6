@@ -16,6 +16,7 @@ type book struct {
 	Pages     int    `json:"pages"`
 	PagesRead int    `json:"pagesRead"`
 	Progress  string `json:"progress"`
+	Picture   string `json:"picture"`
 }
 
 func renderBooks(c *gin.Context, books []book) {
@@ -44,13 +45,16 @@ func addBooksFromHTML(db *sql.DB) gin.HandlerFunc {
 			Pages:     pages,
 			PagesRead: 0,
 			Progress:  "Not Started",
+			Picture:   c.PostForm("picture"),
 		}
 		err := addBooks(newBook, db)
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
 		}
+		c.Redirect(http.StatusSeeOther, "/")
 	}
+
 }
 
 func deleteBooksFromHTML(db *sql.DB) gin.HandlerFunc {
@@ -62,6 +66,7 @@ func deleteBooksFromHTML(db *sql.DB) gin.HandlerFunc {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
 		}
+		c.Redirect(http.StatusSeeOther, "/")
 	}
 }
 
@@ -76,6 +81,7 @@ func chooseBooksFromHTML(db *sql.DB) gin.HandlerFunc {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
 		}
+		c.Redirect(http.StatusSeeOther, "/")
 	}
 }
 
@@ -108,7 +114,6 @@ func main() {
 			"title": "You can update a book here!",
 		})
 	})
-
 	router.POST("/update", chooseBooksFromHTML(db))
 
 	router.Run("localhost:8080")
